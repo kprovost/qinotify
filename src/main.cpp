@@ -34,7 +34,9 @@ int main(int argc, char **argv)
             << " for changes." << std::endl;
         return 1;
     }
+    notifier.start();
 
+    /* Update the view whenever the file changes */
     QObject::connect(&notifier, SIGNAL(fileChange(const QString&)),
             &mainWindow, SLOT(loadFile(const QString&)));
 

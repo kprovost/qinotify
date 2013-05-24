@@ -18,4 +18,6 @@ signals:
 private:
     int m_fd;
     QString m_filename;
+
+    virtual void run();
 };
