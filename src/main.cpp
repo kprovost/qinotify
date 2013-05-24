@@ -1,5 +1,6 @@
-#include <QApplication>
 #include "mainwindow.h"
+#include <QApplication>
+#include <iostream>
 
 int main(int argc, char **argv)
 {
@@ -7,7 +8,25 @@ int main(int argc, char **argv)
     MainWindow mainWindow;
     mainWindow.show();
 
-    mainWindow.loadFile("http://www.google.be");
+    /* Argument parsing */
+    QStringList args = app.arguments();
+    QString appName = args.at(0);
+    args.removeAt(0);
+
+    QString file;
+    if (args.size() == 1)
+    {
+       file = args.at(0);
+    }
+
+    if (file.isEmpty())
+    {
+        std::cerr << "Usage: " << appName.toStdString() << " <file>" << std::endl;
+        return 1;
+    }
+
+    /* Go! */
+    mainWindow.loadFile(file);
 
     return app.exec();
 }
