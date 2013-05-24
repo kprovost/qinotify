@@ -10,7 +10,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = NULL);
 
-private slots:
+public slots:
     void loadFile(const QString&);
 
 private:
