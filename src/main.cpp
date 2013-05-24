@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "inotifier.h"
 #include <QApplication>
 #include <iostream>
 
@@ -25,8 +26,18 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    /* Go! */
-    mainWindow.loadFile(file);
+    /* Monitor the file for changes */
+    INotifier notifier;
+    if (! notifier.monitor(file))
+    {
+        std::cerr << "Unable to monitor file " << file.toStdString()
+            << " for changes." << std::endl;
+        return 1;
+    }
 
+    QObject::connect(&notifier, SIGNAL(fileChange(const QString&)),
+            &mainWindow, SLOT(loadFile(const QString&)));
+
+    /* Go! */
     return app.exec();
 }
