@@ -1,7 +1,10 @@
-#include <qdebug.h>
+#include <QApplication>
+#include "mainwindow.h"
 
 int main(int argc, char **argv)
 {
-    qDebug() << "Hello world!";
-    return 0;
+    QApplication app(argc, argv);
+    MainWindow mainWindow;
+    mainWindow.show();
+    return app.exec();
 }
