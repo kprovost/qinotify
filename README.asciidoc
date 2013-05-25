@@ -6,6 +6,11 @@ This is a simple utility, intended to make my life easier when editing
 It will watch a _.asciidoc_ file compiling it to HTML and displaying the new
 version whenver the original _.asciidoc_ file is changed.
 
+This is very convenient in combination with a tiling window manager: half of
+the screen is a *Vim* session with the asciidoc source, the other half is the
+HTML result. The HTML is updated whenever the edits to the source file are
+saved.
+
 It can also be used with plain HTML (_.html_) files, in which case it will not
 attempt to call asciidoc.
 
@@ -19,3 +24,14 @@ Usage
 -----
 [source,shell]
 # ./qinotify README.asciidoc
+
+FAQ
+---
+Why doesn't this also include an editor?::
+  Vim is better than anything I could come up with. Besides, Vim already exists.
+
+TODO
+----
+ * Add a status bar (bottom, below HTML view) with last updated time.
+ * Add quit button (optional..)
+ * Additional viewer support (i.e. for .sdedit PNGs)?
