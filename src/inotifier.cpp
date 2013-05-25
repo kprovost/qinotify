@@ -28,7 +28,8 @@ bool INotifier::monitor(const QString &filename)
     m_fd = inotify_init();
     Q_ASSERT(m_fd > 0);
 
-    int ret = inotify_add_watch(m_fd, filename.toStdString().c_str(),
+    /* TODO: Extract directory name from path */
+    int ret = inotify_add_watch(m_fd, ".",
             IN_CLOSE_WRITE | IN_MODIFY);
     if (ret == -1)
     {
@@ -47,10 +48,12 @@ void INotifier::run()
     /* Emit initial file change so we load the file for the first time */
     emit fileChange(m_filename);
 
+    size_t size = sizeof(struct inotify_event) + NAME_MAX + 1;
+    struct inotify_event *event = (struct inotify_event*)new char[size];
+
     while (1)
     {
-        struct inotify_event event;
-        int ret = read(m_fd, &event, sizeof(struct inotify_event));
+        int ret = read(m_fd, event, size);
         if (ret == -1)
         {
             cerr << "Inotify failure: " << strerror(errno)
@@ -59,9 +62,23 @@ void INotifier::run()
         }
         Q_ASSERT(ret == sizeof(struct inotify_event));
 
-        /* TODO: Handle file deletion / re-creation */
-        emit fileChange(m_filename);
+        cerr << "Inotify update mask " << hex << event->mask << " on file " << event->name << endl;
+        if (event->name && event->name != m_filename)
+            continue;
+
+        if (event->mask & IN_IGNORED)
+            /* This happens when the file is removed (as vim does whenever it
+             * saves!) */
+            continue;
+
+        if (event->mask & IN_MODIFY
+            || event->mask & IN_CREATE
+            || event->mask & IN_CLOSE_WRITE)
+        {
+            emit fileChange(m_filename);
+        }
     }
 
+    delete [] event;
     Q_ASSERT(false);
 }
