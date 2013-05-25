@@ -12,6 +12,9 @@ public:
 
     bool monitor(const QString &filename);
 
+public slots:
+    void quit();
+
 signals:
     void fileChange(const QString &filename);
 

@@ -92,3 +92,9 @@ void INotifier::run()
 
     delete [] event;
 }
+
+void INotifier::quit()
+{
+    this->terminate();
+    this->wait();
+}

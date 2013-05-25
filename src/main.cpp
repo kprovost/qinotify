@@ -47,6 +47,10 @@ int main(int argc, char **argv)
     QObject::connect(&c, SIGNAL(loadFile(const QString&)),
             &mainWindow, SLOT(loadFile(const QString&)));
 
+    /* Handle exits */
+    QObject::connect(&app, SIGNAL(aboutToQuit()),
+            &notifier, SLOT(quit()));
+
     /* Go! */
     return app.exec();
 }
