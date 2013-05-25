@@ -14,4 +14,7 @@ public slots:
 
 signals:
     void loadFile(const QString &filename);
+
+private:
+    QString compileAsciidoc(QString filename);
 };
