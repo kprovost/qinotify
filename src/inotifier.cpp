@@ -65,6 +65,9 @@ void INotifier::run()
         int ret = read(m_fd, event, size);
         if (ret == -1)
         {
+            if (errno == EINTR)
+                continue;
+
             cerr << "Inotify failure: " << strerror(errno)
                  << " (" << errno << ")" << endl;
             break;
@@ -88,5 +91,4 @@ void INotifier::run()
     }
 
     delete [] event;
-    Q_ASSERT(false);
 }
