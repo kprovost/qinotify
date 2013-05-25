@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "inotifier.h"
+#include "compiler.h"
 #include <QApplication>
 #include <iostream>
 
@@ -36,8 +37,14 @@ int main(int argc, char **argv)
     }
     notifier.start();
 
-    /* Update the view whenever the file changes */
+    /* Process files before viewing */
+    Compiler c;
+
     QObject::connect(&notifier, SIGNAL(fileChange(const QString&)),
+            &c, SLOT(fileChange(const QString&)));
+
+    /* Update the view whenever the file changes */
+    QObject::connect(&c, SIGNAL(loadFile(const QString&)),
             &mainWindow, SLOT(loadFile(const QString&)));
 
     /* Go! */

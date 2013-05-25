@@ -3,8 +3,15 @@ cmake_minimum_required(VERSION 2.8)
 project(qinotify)
 find_package(Qt4 REQUIRED QtCore QtGui QtWebKit)
 
-set(SRC src/main.cpp src/mainwindow.cpp src/viewer.cpp src/inotifier.cpp)
-set(HDR src/mainwindow.h src/viewer.h src/inotifier.h)
+set(SRC src/main.cpp
+        src/mainwindow.cpp
+        src/viewer.cpp
+        src/inotifier.cpp
+        src/compiler.cpp)
+set(HDR src/mainwindow.h
+        src/viewer.h
+        src/inotifier.h
+        src/compiler.h)
 
 qt4_wrap_cpp(HDR_MOC ${HDR})
 
