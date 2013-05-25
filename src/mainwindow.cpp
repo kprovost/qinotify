@@ -11,7 +11,5 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::loadFile(const QString &filename)
 {
-    qDebug() << "Load file " << filename;
-
     centralWidget->load(filename);
 }
