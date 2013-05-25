@@ -1,0 +1,21 @@
+Introduction
+------------
+This is a simple utility, intended to make my life easier when editing
+*asciidoc*.
+
+It will watch a _.asciidoc_ file compiling it to HTML and displaying the new
+version whenver the original _.asciidoc_ file is changed.
+
+It can also be used with plain HTML (_.html_) files, in which case it will not
+attempt to call asciidoc.
+
+Build Requirements
+-------------------
+ * cmake (2.8+)
+ * libqt4-dev
+ * libqtwebkit-dev
+
+Usage
+-----
+[source,shell]
+# ./qinotify README.asciidoc
