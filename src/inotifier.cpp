@@ -2,8 +2,12 @@
 #include <errno.h>
 #include <unistd.h>
 #include <sys/inotify.h>
+#include <libgen.h>
 #include <string.h>
 #include <iostream>
+
+#include <QFileInfo>
+#include <QDir>
 
 using namespace std;
 
@@ -28,8 +32,10 @@ bool INotifier::monitor(const QString &filename)
     m_fd = inotify_init();
     Q_ASSERT(m_fd > 0);
 
-    /* TODO: Extract directory name from path */
-    int ret = inotify_add_watch(m_fd, ".",
+    QFileInfo fi(filename);
+    QString directory = fi.dir().path();
+
+    int ret = inotify_add_watch(m_fd, directory.toStdString().c_str(),
             IN_CLOSE_WRITE | IN_MODIFY);
     if (ret == -1)
     {
@@ -48,6 +54,9 @@ void INotifier::run()
     /* Emit initial file change so we load the file for the first time */
     emit fileChange(m_filename);
 
+    QFileInfo fi(m_filename);
+    QString file = fi.fileName();
+
     size_t size = sizeof(struct inotify_event) + NAME_MAX + 1;
     struct inotify_event *event = (struct inotify_event*)new char[size];
 
@@ -62,8 +71,7 @@ void INotifier::run()
         }
         Q_ASSERT(ret == sizeof(struct inotify_event));
 
-        cerr << "Inotify update mask " << hex << event->mask << " on file " << event->name << endl;
-        if (event->name && event->name != m_filename)
+        if (event->name && event->name != file)
             continue;
 
         if (event->mask & IN_IGNORED)
