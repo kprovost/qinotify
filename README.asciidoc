@@ -23,7 +23,9 @@ Build Requirements
 Usage
 -----
 [source,shell]
+----
 # ./qinotify README.asciidoc
+----
 
 FAQ
 ---
