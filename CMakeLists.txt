@@ -20,3 +20,4 @@ add_definitions(${QT_DEFINITIONS})
 
 add_executable(qinotify ${SRC} ${HDR_MOC})
 target_link_libraries(qinotify ${QT_LIBRARIES})
+install(TARGETS qinotify DESTINATION bin)
