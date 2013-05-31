@@ -35,5 +35,6 @@ Why doesn't this also include an editor?::
 TODO
 ----
  * Add a status bar (bottom, below HTML view) with last updated time.
+ * Improved sizing policy for the error box
  * Add quit button (optional..)
  * Additional viewer support (i.e. for .sdedit PNGs)?
