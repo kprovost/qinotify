@@ -1,9 +1,11 @@
 #pragma once
 
-#include <QMainWindow>
+#include <QWidget>
+#include <QGridLayout>
+#include <QTextEdit>
 #include "viewer.h"
 
-class MainWindow : public QMainWindow
+class MainWindow : public QWidget
 {
     Q_OBJECT;
 
@@ -13,6 +15,13 @@ public:
 public slots:
     void loadFile(const QString&);
 
+    void stderr(const QString&);
+    void stdout(const QString&);
+    void clear();
+
 private:
+    QGridLayout *m_layout;
+    QWidget *m_window;
     Viewer *m_centralWidget;
+    QTextEdit *m_errorBox;
 };

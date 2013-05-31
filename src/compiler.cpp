@@ -1,6 +1,5 @@
 #include "compiler.h"
 #include <QRegExp>
-#include <QDebug>
 
 Compiler::Compiler()
 {
@@ -42,13 +41,13 @@ void Compiler::compileAsciidoc(QString filename)
 void Compiler::readStdErr()
 {
     QByteArray out = m_process.readAllStandardError();
-    qDebug() << "Error " << out;
+    emit stderr(QString(out));
 }
 
 void Compiler::readStdOut()
 {
     QByteArray out = m_process.readAllStandardOutput();
-    qDebug() << "Normal " << out;
+    emit stdout(QString(out));
 }
 
 void Compiler::done(int exitCode, QProcess::ExitStatus status)

@@ -46,6 +46,12 @@ int main(int argc, char **argv)
     /* Update the view whenever the file changes */
     QObject::connect(&c, SIGNAL(loadFile(const QString&)),
             &mainWindow, SLOT(loadFile(const QString&)));
+    QObject::connect(&c, SIGNAL(stderr(const QString&)),
+            &mainWindow, SLOT(stderr(const QString&)));
+    QObject::connect(&c, SIGNAL(stdout(const QString&)),
+            &mainWindow, SLOT(stdout(const QString&)));
+    QObject::connect(&notifier, SIGNAL(fileChange(const QString&)),
+            &mainWindow, SLOT(clear()));
 
     /* Handle exits */
     QObject::connect(&app, SIGNAL(aboutToQuit()),

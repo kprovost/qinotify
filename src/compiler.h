@@ -18,6 +18,8 @@ public slots:
 
 signals:
     void loadFile(const QString &filename);
+    void stderr(const QString &out);
+    void stdout(const QString &out);
 
 private:
     void compileAsciidoc(QString filename);

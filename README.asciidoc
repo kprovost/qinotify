@@ -1,3 +1,5 @@
+`$$license(GPL)$$`
+
 Introduction
 ------------
 This is a simple utility, intended to make my life easier when editing
