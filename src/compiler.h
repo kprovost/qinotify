@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QObject>
+#include <QProcess>
 
 class Compiler : public QObject
 {
@@ -11,10 +12,16 @@ public:
 
 public slots:
     void fileChange(const QString &filename);
+    void readStdErr();
+    void readStdOut();
+    void done(int exitCode, QProcess::ExitStatus status);
 
 signals:
     void loadFile(const QString &filename);
 
 private:
-    QString compileAsciidoc(QString filename);
+    void compileAsciidoc(QString filename);
+
+    QProcess m_process;
+    QString m_filename;
 };

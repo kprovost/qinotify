@@ -1,29 +1,58 @@
 #include "compiler.h"
 #include <QRegExp>
+#include <QDebug>
 
 Compiler::Compiler()
 {
-
+    connect(&m_process, SIGNAL(readyReadStandardError()), this, SLOT(readStdErr()));
+    connect(&m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(readStdOut()));
+    connect(&m_process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(done(int, QProcess::ExitStatus)));
 }
 
 void Compiler::fileChange(const QString &filename)
 {
-    QString outputFile;
+    // Ensure previous process is dead!
+    if (m_process.state() != QProcess::NotRunning)
+    {
+        m_process.terminate();
+        m_process.waitForFinished(500);
+
+        // Still not dead? Try harder!
+        if (m_process.state() != QProcess::NotRunning)
+        {
+            m_process.kill();
+            m_process.waitForFinished();
+            Q_ASSERT(m_process.state() == QProcess::NotRunning);
+        }
+    }
+
+    m_filename = filename;
 
     if (filename.endsWith(".asciidoc"))
-    {
-        outputFile = compileAsciidoc(filename);
-    }
+        compileAsciidoc(filename);
     else
-        outputFile = filename;
-
-    emit loadFile(outputFile);
+        emit loadFile(filename);
 }
 
-QString Compiler::compileAsciidoc(QString filename)
+void Compiler::compileAsciidoc(QString filename)
 {
-    QString cmd = QString("asciidoc %1").arg(filename);
-    system(cmd.toStdString().c_str());
+    m_process.start(QString("asciidoc"), QStringList(filename));
+}
 
-    return filename.replace(QRegExp(".asciidoc$"), ".html");
+void Compiler::readStdErr()
+{
+    QByteArray out = m_process.readAllStandardError();
+    qDebug() << "Error " << out;
+}
+
+void Compiler::readStdOut()
+{
+    QByteArray out = m_process.readAllStandardOutput();
+    qDebug() << "Normal " << out;
+}
+
+void Compiler::done(int exitCode, QProcess::ExitStatus status)
+{
+    QString outputFile = m_filename.replace(QRegExp(".asciidoc$"), ".html");
+    emit loadFile(outputFile);
 }
