@@ -1,0 +1,5 @@
+Example: warning
+-----------------
+This _AsciiDoc_ example generates a warning. Use it to test the warning/error box.
+
+`$$license(GPL)$$`
