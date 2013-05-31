@@ -38,6 +38,8 @@ void MainWindow::stderr(const QString& err)
 
     m_errorBox->setFontWeight(origFw);
     m_errorBox->setTextColor(origColor);
+
+    m_errorBox->show();
 }
 
 void MainWindow::stdout(const QString& warn)
@@ -51,9 +53,12 @@ void MainWindow::stdout(const QString& warn)
 
     m_errorBox->setFontWeight(origFw);
     m_errorBox->setTextColor(origColor);
+
+    m_errorBox->show();
 }
 
 void MainWindow::clear()
 {
+    m_errorBox->hide();
     m_errorBox->clear();
 }
