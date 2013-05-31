@@ -5,11 +5,11 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    centralWidget = new Viewer(this);
-    setCentralWidget(centralWidget);
+    m_centralWidget = new Viewer(this);
+    setCentralWidget(m_centralWidget);
 }
 
 void MainWindow::loadFile(const QString &filename)
 {
-    centralWidget->load(filename);
+    m_centralWidget->load(filename);
 }

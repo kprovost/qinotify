@@ -14,5 +14,5 @@ public slots:
     void loadFile(const QString&);
 
 private:
-    Viewer *centralWidget;
+    Viewer *m_centralWidget;
 };
